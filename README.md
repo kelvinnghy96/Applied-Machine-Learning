@@ -1,5 +1,5 @@
 # Applied Machine Learning (Stroke Prediction with Data Science)
-CT046-3-M-AML
+
 
 ### ABSTRACT
 Stroke, a disease which impact on arteries connecting to brain and occur when a blood vessel is blocked from transferring nutrients and oxygen to the brain. It is the third major leading causes of death in Malaysia, and it reach 9.80% of Malaysia’s total deaths in year 2018. With early detection on stroke disease, various of preventive action can be took to reduce the damage dealt to the stroke patient, therefore, numerous of research is done all over the world to predict stroke with data. In this assignment, 4 machine learning model approach which are Naïve Bayes, Logistic Regression, Random Forest, and Support Vector Machine (SVM) have been built for stroke prediction. Here, One-hot encoding has been used to convert categorical data into binary variable to provide more detail information in model training, synthetic minority over-sampling technique (SMOTE) has been used for class balancing in train dataset and min-max normalization technique is used to convert all numeric value into common scale. After analyzing and comparing between the 4-model built, the optimum stroke prediction model among the 4 model is 93.59% accuracy.

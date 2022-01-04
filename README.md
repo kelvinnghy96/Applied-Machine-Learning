@@ -10,7 +10,6 @@ Data science has become a trend in year 2021. A lot of industry including health
 The objective and research goal of this assignment is to train 4 machine learning model which are Naïve Bayes, Logistic Regression, Random Forest, and SVM then compare among the model to retrieve a stroke prediction model with the highest accuracy. In this assignment 12 clinical features including patient demography, body mass index, average glucose level, high blood pressure status and heart disease status are collected and used to train the model. Data are collected from more than 5000 individuals while all the sensitive data has been masked and removed. These datasets are integrated and transformed to remove abnormal and missing value while multiple data pre-process technique such as one-hot encoding, min-max normalization and class balancing has been applied on the dataset to train a better stroke prediction model.
 
 ### MODEL USED
-
 - Naïve Bayes
 - Logistic Regression
 - Random Forest

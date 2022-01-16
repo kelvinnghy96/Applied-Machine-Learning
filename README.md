@@ -1,5 +1,9 @@
 # Table of Content
-
+- [Installation Guide](#installation-guide)
+- [ABSTRACT](#abstract)
+- [INTRODUCTION, RESEARCH GOAL & OBJECTIVES](#introduction-research-goal--objectives)
+- [MODEL USED](#model-used)
+- [DATASET DESCRIPTION](#dataset-description)
 
 # Installation Guide
 1. Click [here](https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/archive/refs/heads/main.zip) to download ```Air Pressure System Failure for Scania Trucks``` ZIP file.

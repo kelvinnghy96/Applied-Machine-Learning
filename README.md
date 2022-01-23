@@ -9,9 +9,9 @@
   - [1.2 Objectives & Research Goal](#12-objectives--research-goal)
   - [1.3 Model Used](#13-model-used)
   - [1.4 Dataset Description](#14-dataset-description)
-  - [1.5 RELATED WORKS](#15-related-works)
+  - [1.5 Related Works](#15-related-works)
   - [1.6 Learning Technique and Library Used](#16-learning-technique-and-library-used)
-  - [1.7 DATASET PREPARATION](#17-dataset-preparation)
+  - [1.7 Data Preprocessing](#17-data-preprocessing)
     - [1.7.1 Data Cleansing](#171-data-cleansing)
     - [1.7.2 Correlation Matrix](#172-correlation-matrix)
     - [1.7.3 One-hot Encoding](#173-one-hot-encoding)
@@ -31,50 +31,65 @@
 
 
 ## Abstract
-Stroke, a disease which impact on arteries connecting to brain and occur when a blood vessel is blocked from transferring nutrients and oxygen to the brain. It is the third major leading causes of death in Malaysia, and it reach 9.80% of Malaysia’s total deaths in year 2018. With early detection on stroke disease, various of preventive action can be took to reduce the damage dealt to the stroke patient, therefore, numerous of research is done all over the world to predict stroke with data. In this assignment, 4 machine learning model approach which are Naïve Bayes, Logistic Regression, Random Forest, and Support Vector Machine (SVM) have been built for stroke prediction. Here, One-hot encoding has been used to convert categorical data into binary variable to provide more detail information in model training, synthetic minority over-sampling technique (SMOTE) has been used for class balancing in train dataset and min-max normalization technique is used to convert all numeric value into common scale. After analyzing and comparing between the 4-model built, the optimum stroke prediction model among the 4 model is 93.59% accuracy.
+```Stroke```, a disease which impact on arteries connecting to brain and occur when a blood vessel is blocked from transferring nutrients and oxygen to the brain. It is the ```third major``` leading causes of death in ```Malaysia```, and it reach ```9.80%``` of ```Malaysia’s total deaths``` in year ```2018```. With early detection on stroke disease, various of preventive action can be took to reduce the damage dealt to the stroke patient, therefore, numerous of research is done all over the world to predict stroke with data. 
+In this assignment, ```4``` machine learning model approach which are ```Naïve Bayes```, ````Logistic Regression```, ```Random Forest```, and ```Support Vector Machine (SVM)``` have been built for stroke prediction. 
+```One-hot encoding``` is used to convert categorical data into binary variable to provide more detail information in model training.
+ ```Synthetic Minority Over-sampling Technique (SMOTE)``` is used for class balancing in train dataset.
+```Min-max normalization``` technique is used to convert all numeric value into common scale. 
 
 ## 1.1 Introduction
-Data science has become a trend in year 2021. A lot of industry including healthcare sector using data to improve the production rate and efficiency in their sector. Healthcare sector is one of the important sectors that used high accuracy prediction model to take preventive action on various disease and to reduce disease mortality rate of a country. Stroke disease has been selected in this assignment because it is one of the major diseases causes death over the world and the most important reason is stroke can be prevented and cure if it able to be predict and detected at early stage and therefore model accuracy is very important for a disease prediction model as early detection or prediction can lead to earlier preventive action and save a life.
+```Data science``` has become a trend in year ```2021```. A lot of industry including ```healthcare sector``` using data to improve the production rate and efficiency in their sector. Healthcare sector is one of the important sectors that used high accuracy prediction model to take ```preventive action``` on various disease and to ```reduce disease mortality rate``` of a country. ```Stroke disease``` has been selected in this assignment because it is one of the ```major diseases``` causes death over the world and the most important reason is stroke can be ```prevented``` and ```cure``` if it able to be predict and ```detected``` at ```early stage``` and therefore model accuracy is very important for a ```disease prediction model``` as early detection or prediction can lead to earlier preventive action and ```save a life```.
 
 ## 1.2 Objectives & Research Goal
-The objective and research goal of this assignment is to train 4 machine learning model which are Naïve Bayes, Logistic Regression, Random Forest, and SVM then compare among the model to retrieve a stroke prediction model with the highest accuracy. In this assignment 12 clinical features including patient demography, body mass index, average glucose level, high blood pressure status and heart disease status are collected and used to train the model. Data are collected from more than 5000 individuals while all the sensitive data has been masked and removed. These datasets are integrated and transformed to remove abnormal and missing value while multiple data pre-process technique such as one-hot encoding, min-max normalization and class balancing has been applied on the dataset to train a better stroke prediction model.
+The ```objective``` and ```research goal``` of this assignment is to ```train 4 machine learning model``` which are Naïve Bayes, Logistic Regression, Random Forest, and SVM then ```compare``` among the model to retrieve a stroke prediction model with the ```highest accuracy```. In this assignment ```12 clinical features``` including ```patient demography```, ```body mass index```, ```average glucose level```, ```high blood pressure status``` and ```heart disease status``` are collected and used to train the model. Data are collected from more than ```5000``` individuals while all the sensitive data has been masked and removed. These datasets are ```integrated``` and ```transformed``` to remove abnormal and missing value while multiple data preprocess technique such as ```one-hot encoding```, ```min-max normalization``` and ```SMOTE``` has been applied on the dataset to train a better stroke prediction model.
 
 ## 1.3 Model Used
-- Naïve Bayes
-- Logistic Regression
-- Random Forest
-- Support Vector Machine (SVM)
+ - Naïve Bayes
+ - Logistic Regression
+ - Random Forest
+ - Support Vector Machine (SVM)
 
 ## 1.4 Dataset Description
-This assignment used a stroke prediction dataset which contain 5110 observations with 13 attributes. This dataset contains patient id to ensure the uniqueness of each observation and 12 other attributes which will be explained in detail. Gender, categorical data with categories of male and female. Age, continuous data with normal range between 0 to 120. Age categories, categorical data with categories of infants, adults, children, older adults, and teens. Smoking status, categorical data with categories of formerly, never and smokes. Married status, categorical data with categories of yes and no which determine whether an individual is married previously. Employment status with categories of children, government job, never worked, private and self-employed. Region type, categorical data with categories of rural and urban. Body mass index, continuous data with normal range between 20 to 60. Average glucose level, continuous data with normal range between 60 to 240. High blood pressure, categorical data with categories of 0 and 1 which determine whether an individual is having high blood pressure. Heart disease, categorical data with categories of 0 and 1 which determine whether an individual is having a heart disease. Stroke status, target variable in this dataset and categorical data with categories of yes and no which determine whether an individual is having stroke
+This assignment used a ```stroke prediction dataset``` which contain ```5110``` observations with ```13``` attributes. This dataset contains ```patient id``` to ensure the ```uniqueness``` of each observation and 12 other attributes which will be explained in detail. 
+```Gender```, categorical data with categories of male and female. Age, continuous data with normal range between 0 to 120. 
+```Age categories```, categorical data with categories of infants, adults, children, older adults, and teens. 
+```Smoking status```, categorical data with categories of formerly, never and smokes. 
+```Married status```, categorical data with categories of yes and no which determine whether an individual is married previously. 
+```Employment status``` with categories of children, government job, never worked, private and self-employed. 
+```Region type```, categorical data with categories of rural and urban. 
+```Body mass index```, continuous data with normal range between 20 to 60. 
+```Average glucose level```, continuous data with normal range between 60 to 240. 
+```High blood pressure```, categorical data with categories of 0 and 1 which determine whether an individual is having high blood pressure. 
+```Heart disease```, categorical data with categories of 0 and 1 which determine whether an individual is having a heart disease. 
+```Stroke status```, target variable in this dataset and categorical data with categories of yes and no which determine whether an individual is having stroke
 
-## 1.5 RELATED WORKS
-While searching for stroke prediction model relevant previous work, search result shows the number of stroke prediction model is increasing year by year. Various of model are used in building stroke prediction model but the dataset used in each related work are relatively small to fully explore the potential of machine learning model and shorten the duration to train the model. This assignment also used relatively small stroke prediction dataset to build and train the model.
+## 1.5 Related Works
+While searching for stroke prediction model ```relevant previous work```, search result shows the number of stroke prediction model is increasing year by year. Various of model are used in building stroke prediction model but the dataset used in each related work are relatively small to fully explore the potential of machine learning model and ```shorten``` the ```duration``` to ```train``` the model. This assignment also used relatively ```small``` stroke prediction dataset to build and train the model.
 
-For handling null value or empty string, most of the relevant work will handle null value with simple method such as single imputation or complete case analysis which is also used in this assignment. Advantage of using complete case analysis is it will remove noise variable and retain only useful and accurate data, but it will also further reduce the size of the dataset and affect the efficiency of model training process.
+For handling ```null value``` or ```empty string```, most of the relevant work will handle null value with simple method such as single imputation or ```complete case analysis``` which is also used in this assignment. ```Advantage``` of using ```complete case analysis``` is it will ```remove noise variable``` and ```retain``` only ```useful``` and ```accurate``` data, but it will also further ```reduce``` the ```size``` of the dataset and affect the efficiency of model training process.
 
-Most used machine learning model in each relevant work were Random Forest, SVM, Artificial Neural Network and Decision Tree. It’s hard to compare and decide best performance model in each relevant work as the data characteristic used is different in each relevant work but SVM perform better in most of the studies follow up with Random Forest and Artificial Neural Network. Random Forest and SVM are also used in this assignment but the model performance result shows that Random Forest perform better than SVM in this assignment.
+Most used machine learning model in each relevant work were ```Random Forest```, ```SVM```, ```Artificial Neural Network``` and ```Decision Tree```. It’s hard to compare and decide best performance model in each relevant work as the ```data characteristic``` used is ```different``` in each relevant work but SVM perform better in most of the studies follow up with Random Forest and Artificial Neural Network. Random Forest and SVM are also used in this assignment but the model performance result shows that ```Random Forest``` perform ```better``` than SVM in this assignment.
 
-Model validation is important in model building so that the model can have certain accuracy when dealing with real world industry data. In most of the relevant work, common internal validation methods are used such as train test data split and cross validation. Train test data split validation is used in this assignment with a ratio of 0.7 because cross validation with multiple folds will require more training time and consume more local machine resource which will slow down the process of this assignment, therefore, split validation that faster speed in training model is used in this assignment.
+```Model validation``` is important in model building so that the model can have certain accuracy when dealing with real world industry data. In most of the relevant work, common internal validation methods are used such as train test data split and cross validation. ```Train test data split``` validation is used in this assignment with a ratio of ```7:3``` because cross validation with multiple folds will require more training time and consume more local machine resource which will slow down the process of this assignment, therefore, split validation that has ```shorter``` training ```duration``` is used in this assignment.
 
-Performance metric is important to determine which model perform better. In most of the relevant work, F-score is used when dealing with imbalance data while accuracy is used when dealing with balance data. In this assignment, accuracy will be the main performance metric to determine the performance of each model built. 
+```Performance metric``` is important to determine which model perform better. In most of the relevant work, F-score is used when dealing with imbalance data while accuracy is used when dealing with balance data. In this assignment, ```accuracy``` will be the main performance metric to determine the performance of each model built. 
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/table1.png" /></a>
 </p>
 
-Summary table is created above based on review on previous relevant work. Every process built and model trained in this assignment will be done based on the reference on the above summary table.
+```Summary table``` is created above based on review on previous relevant work. Every process built and model trained in this assignment will be done based on the ```reference``` on the above summary table.
 
 ## 1.6 Learning Technique and Library Used
-The learning technique used in this assignment is supervised learning technique and the package and library used is listed in figure below.
+The ```learning technique``` used in this assignment is ```supervised learning``` technique and the package and ```library``` used is listed in figure below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure1.png" /></a>
 </p>
 
-The machine learning method use in this assignment are Naïve Bayes, Logistic Regression, Random Forest, and SVM as these methods are good classifier to deal with categorical target variable. The metric used in this assignment to evaluate the performance of the model is ```accuracy```.
+The machine learning method use in this assignment are ```Naïve Bayes```, ```Logistic Regression```, ```Random Forest```, and ```SVM``` as these methods are good ```classifier``` to deal with categorical target variable. The metric used in this assignment to evaluate the performance of the model is ```accuracy```.
 
-## 1.7 DATASET PREPARATION
+## 1.7 Data Preprocessing
 ### 1.7.1 Data Cleansing
 Before start with dataset preparation, seed is set at ```2021``` to ensure getting back same result each time the process is rerun. When checking dataset using ```str(data)```, wrong data type is detected on ```body_mass_index``` which is ```character``` type instead of ```numeric``` type as figure below.
 
@@ -164,7 +179,7 @@ Once the dataset is split into train and test data, ```class balancing``` is per
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure15.png" /></a>
 </p>
 
-After perform class balancing using SMOTE technique to oversample the dataset, the distribution of target variable is balanced.
+After perform ```class balancing``` using ```SMOTE``` technique to oversample the dataset, the distribution of target variable is ```balanced```.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure16.png" /></a>
@@ -175,14 +190,14 @@ After perform class balancing using SMOTE technique to oversample the dataset, t
 </p>
 
 ### 1.7.4 Min-max Normalization
-Min-max normalization is performed on both train and test data as preprocess modelling need to be exactly same for train data, test data as well as real world data when the model is in production.
+```Min-max normalization``` is performed on both train and test data as preprocess modelling need to be exactly same for train data, test data as well as real world data when the model is in production.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure18.png" /></a>
 </p>
 
 ## 1.8 Naïve Bayes
-The first model build is Naïve Bayes model. The hyperparameter of Naïve Bayes model is tuned with ```grid search``` method as figure below.
+The first model build is ```Naïve Bayes``` model. The hyperparameter of Naïve Bayes model is tuned with ```grid search``` method as figure below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure19.png" /></a>
@@ -194,7 +209,7 @@ The first model build is Naïve Bayes model. The hyperparameter of Naïve Bayes 
 
 ```3``` hyperparameter in Naïve Bayes were tuned which are ```fL```, ```usekernel``` and ```adjust```. 
 ```fL``` hyperparameter allow user to include Laplace smoother, ```usekernel``` hyperparameter allows user to use a kernel density estimate for continuous variables against a guassian density estimate while ```adjust``` hyperparameter is referring to the bandwidth of kernel density. 
-The final value used to build Naïve Bayes model after tuned were ```fL = 0```, ```usekernel = TRUE``` and ```adjust = 1```.
+The ```final``` value used to build Naïve Bayes model after tuned were ```fL = 0```, ```usekernel = TRUE``` and ```adjust = 1```.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure21.png" /></a>
@@ -216,10 +231,10 @@ The above figure is the ```confusion matrix``` of Naïve Bayes model, and the ``
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure24.png" /></a>
 </p>
 
-The accuracy of Naïve Bayes stroke prediction model is ```76.03%```.
+The ```accuracy``` of ```Naïve Bayes``` stroke prediction model is ```76.03%```.
 
 ## 1.9 Logistic Regression
-The next model build is Logistic Regression model. The Logistic Regression model is train as figure below.
+The next model build is ```Logistic Regression``` model. The Logistic Regression model is train as figure below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure25.png" /></a>
@@ -247,18 +262,19 @@ The above figure is the ```confusion matrix``` of Logistic Regression model, and
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure29.png" /></a>
 </p>
 
-The accuracy of Logistic Regression stroke prediction model is ```72.28%```.
+The ```accuracy``` of ```Logistic Regression``` stroke prediction model is ```72.28%```.
 
 ## 1.10 Random Forest
-The third model build is Random Forest model. The Random Forest model is tuned using ```grid search``` method as figure below.
+The third model build is ```Random Forest``` model. The Random Forest model is tuned using ```grid search``` method as figure below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure30.png" /></a>
 </p>
 
-Only one hyperparameter in Random Forest is tuned which is the ```mtry``` hyperparameter as tuning on both ```mtry``` and ```ntree``` parameter will consume a lot of resource of the local machine and the duration took few hours, therefore, in this assignment only ```mtry``` hyperparameter is
+Only ```1``` hyperparameter in Random Forest is tuned which is the ```mtry``` hyperparameter as tuning on both ```mtry``` and ```ntree``` parameter will consume a lot of resource of the local machine and the duration took few hours, therefore, in this assignment only ```mtry``` hyperparameter is
 tuned for Random Forest. 
-```Mtry``` hyperparameter will randomly sample variables based on the number assigned as candidate at each split. The final value of mtry hyperparameter tune from ```grid search``` method is ```mtry = 6```, therefore, Random Forest model are train with hyperparameter ```mtry = 6```.
+```Mtry``` hyperparameter will randomly sample variables based on the number assigned as candidate at each split. 
+The ```final``` value of mtry hyperparameter tune from ```grid search``` method is ```mtry = 6```, therefore, Random Forest model are train with hyperparameter ```mtry = 6```.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure31.png" /></a>
@@ -270,10 +286,10 @@ The above figure is the ```confusion matrix``` of Random Forest model, and the `
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure32.png" /></a>
 </p>
 
-The ```accuracy``` of Random Forest stroke prediction model is ```93.59%```.
+The ```accuracy``` of ```Random Forest``` stroke prediction model is ```93.59%```.
 
 ## 1.11 Support Vector Machine (SVM)
-The next model build is SVM model. The SVM model is tuned using ```grid search``` method as figure below.
+The next model build is ```SVM``` model. The SVM model is tuned using ```grid search``` method as figure below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure33.png" /></a>
@@ -281,7 +297,7 @@ The next model build is SVM model. The SVM model is tuned using ```grid search``
 
 ```3``` hyperparameter in SVM were tuned which are ```epsilon```, ```cost```, and ```kernel```. 
 ```Epsilon``` hyperparameter represent the margin that user allow and tolerate that penalty is not given to error, ```cost``` hyperparameter also referring to cost of misclassification where user decide how much data that SVM are allowed to misclassify while ```kernel``` hyperparameter is referring to the method of mathematical function used to deal with input data and transform into. 
-The final value used to build SVM model after tuned ```epsilon = 0```, ```cost = 4```, ```kernel = radial```.
+The ```final``` value used to build SVM model after tuned ```epsilon = 0```, ```cost = 4```, ```kernel = radial```.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure34.png" /></a>
@@ -308,19 +324,19 @@ Based ```accuracy``` of 4 trained model in this assignment, ```Random Forest``` 
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/table2.png" /></a>
 </p>
 
-Naïve Bayes model and Logistic Regression model have a high precision and recall respectively compared to Random Forest model and SVM model which mean Naïve Bayes model can get the true positive value and manage to determine patient who are having stroke while Logistic Regression model manage to get a high amount of false negative which mean logistic regression can’t determine the patient who having stroke but it somehow predicted those who are not having stroke might have stroke in the future which preventive action can be take in advance.
+```Naïve Bayes``` model and ```Logistic Regression``` model have a high ```precision``` and ```recall``` respectively compared to Random Forest model and SVM model which mean ```Naïve Bayes``` model can get the ```true positive``` value and manage to determine patient who are having stroke while Logistic Regression model manage to get a high amount of false negative which mean logistic regression can’t determine the patient who having stroke but it somehow predicted those who are not having stroke might have stroke in the future which preventive action can be take in advance.
 
-Although Random Forest model and SVM model don’t have high precision rate and recall rate, but their accuracy is higher compared to Naïve Bayes model and Logistic Regression model which are 93.59% and 90.43% respectively.
+Although ```Random Forest``` model and ```SVM``` model don’t have high precision rate and recall rate, but their ```accuracy``` is ```higher``` compared to Naïve Bayes model and Logistic Regression model which are ```93.59%``` and ```90.43%``` respectively.
 
-SVM outperform Logistic Regression because SVM finds the optimum distance between line and support vectors to separate class and this lower risk of classification error, while logistics regression can have different decision line with various weight that close to optimal point.
+```SVM``` outperform Logistic Regression because SVM finds the ```optimum distance``` between line and ```support vectors``` to separate class and this ```lower``` risk of ```classification error```, while logistics regression can have different decision line with various weight that close to optimal point.
 
-Random Forest outperformed Logistic Regression because the explanatory variable in this dataset is more while Logistic Regression can only perform better when the explanatory variable is more than noise variable.
+```Random Forest``` outperformed Logistic Regression because there are a lot of ```explanatory variable``` in this dataset where random forest has a higher true and false positive rate as the number of explanatory variables increases in the dataset while Logistic Regression can only perform better when the number of noise variables is less than or equal to the number of explanatory variables.
 
-SVM outperform Naïve Bayes because SVM deal with the interaction between attribute until certain level, but Naïve Bayes treat all attributes independently which cant interpret a deeper level of relationship between attributes but Naïve Bayes train faster than SVM as only probability of each class needed to be calculated in Naïve Bayes.
+```SVM``` outperform Naïve Bayes because SVM deal with the interaction between attribute until certain level, but Naïve Bayes treat all attributes independently which cant interpret a deeper level of relationship between attributes but Naïve Bayes train faster than SVM as only probability of each class needed to be calculated in Naïve Bayes.
 
-Random Forest outperformed Naïve Bayes because it’s have a much more complex and large model size compare to Naïve Bayes while Naïve Bayes is simple model and cannot cater complicated data behavior, therefore, Random Forest have better performance than Naïve Bayes with a dataset with complex behavior but advantage of Naïve Bayes is that it can quickly adapt to the changes in any new dataset while Random Forest need to rebuild whenever there’s changes in dataset else it will lead to overfitting.
+```Random Forest``` outperformed Naïve Bayes because it’s have a much more complex and large model size compare to Naïve Bayes while Naïve Bayes is simple model and cannot cater complicated data behavior, therefore, Random Forest have better performance than Naïve Bayes with a dataset with complex behavior but advantage of Naïve Bayes is that it can quickly adapt to the changes in any new dataset while Random Forest need to rebuild whenever there’s changes in dataset else it will lead to overfitting.
 
-In most of the related work, SVM and Random Forest are used more in stroke prediction model building compared to Naïve Bayes and Logistic Regression as in the real world industry, stroke is a critical disease that can ruin a patient life, therefore, a model with higher accuracy will be prioritize in the real world situation and same case in this assignment where Random Forest stroke prediction model will be recommended as it is the champion model and it has the highest accuracy compare to the other model.
+In most of the ```related work```, ```SVM``` and ```Random Forest``` are used more in stroke prediction model building compared to Naïve Bayes and Logistic Regression as in the ```real world``` industry, stroke is a critical disease that can ruin a patient life, therefore, a model with ```higher accuracy``` will be ```prioritize``` in the real world situation and same case in this assignment where ```Random Forest``` stroke prediction model will be recommended as it is the ```champion model``` and it has the ```highest accuracy``` compare to the other model.
 
 ## License
 Click [here](https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/LICENSE) to view license.

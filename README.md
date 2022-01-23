@@ -98,6 +98,10 @@ Patient id is dropped from the dataset and an extra category of ```Other``` is r
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure5.png" /></a>
 </p>
 
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure5.1.png" /></a>
+</p>
+
 Both missing data and empty string is detected in ```avg_glucose_level```,
 ```employment_status```, ```married_status```, ```heart_disease```, ```high_blood_pressure```, ```body_mass_index```, ```smoking_status``` and removed from the dataset as figure below.
 

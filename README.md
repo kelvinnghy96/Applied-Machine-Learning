@@ -5,9 +5,23 @@
   - [Table of Content](#table-of-content)
   - [Installation Guide](#installation-guide)
   - [Abstract](#abstract)
-  - [Introduction, Research Goal & Objectives](#introduction-research-goal--objectives)
-  - [Model Used](#model-used)
-  - [Dataset Description](#dataset-description)
+  - [1.1 Introduction](#11-introduction)
+  - [1.2 Objectives & Research Goal](#12-objectives--research-goal)
+  - [1.3 Model Used](#13-model-used)
+  - [1.4 Dataset Description](#14-dataset-description)
+  - [1.5 RELATED WORKS](#15-related-works)
+  - [1.6 Learning Technique and Library Used](#16-learning-technique-and-library-used)
+  - [1.7 DATASET PREPARATION](#17-dataset-preparation)
+    - [1.7.1 Data Cleansing](#171-data-cleansing)
+    - [1.7.2 Correlation Matrix](#172-correlation-matrix)
+    - [1.7.3 One-hot Encoding](#173-one-hot-encoding)
+    - [1.7.4 Class Balancing](#174-class-balancing)
+    - [1.7.4 Min-max Normalization](#174-min-max-normalization)
+  - [1.8 Naïve Bayes](#18-naïve-bayes)
+  - [1.9 Logistic Regression](#19-logistic-regression)
+  - [1.10 Random Forest](#110-random-forest)
+  - [1.11 Support Vector Machine (SVM)](#111-support-vector-machine-svm)
+  - [1.12 Analysis & Recommendation](#112-analysis--recommendation)
   - [License](#license)
 
 ## Installation Guide
@@ -68,7 +82,7 @@ Before start with dataset preparation, seed is set at ```2021``` to ensure getti
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure2.png" /></a>
 </p>
 
-The ```body_mass_index``` data type is ```character due``` to ```N/A``` text value in the column, therefore, ```as.numeric()``` function is used to automatically convert ```N/A``` text value to null value and convert the other data to ```numeric``` data type as figures below.
+The ```body_mass_index``` data type is ```character``` due to ```N/A``` text value in the column, therefore, ```as.numeric()``` function is used to automatically convert ```N/A``` text value to null value and convert the other data to ```numeric``` data type as figures below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure3.png" /></a>
@@ -97,205 +111,212 @@ Outlier value and abnormal value is detected and removed from ```body_mass_index
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure7.png" /></a>
 </p>
 
-# Check for outlier and abnormal data
-describe(df)
-# Remove body_mass_index with record more than 100 which is out of normal
-range
-df = df[!(df$body_mass_index > 100),]
-# Remove avg_glucose_level with record more than 300 which is out of normal
-range
-df = df[!(df$avg_glucose_level > 300),]
-# Remove negative value in age and body_mass_index
-df = df[!( df$age < 0 | df$body_mass_index < 0),]
-describe(df)
-Figure 8
-Children under age 14 in Malaysia are not allowed to be employed, therefore, data are
-checked for age under 14 and employment_status are not “Children” as figure below.
-Figure 9
-12
-Correlation Matrix
-Correlation matrix heatmap is built to determine the correlation between all numeric attributes as figure below.
-Figure 10
-From the figure above, there are no correlation between attribute that is more than 0.8, therefore, no attribute is removed from dataset at this step.
-13
-One-hot Encoding
-One-hot encoding technique is used to convert categorical variable into binary variable
-so that the variables can provide more detail information for model training. Categorical column
-need to be convert to factor type only able to apply with one-hot() function as figure below.
-# One-hot encoding categorical data with data table
-col_names <- c('gender','age_categories','smoking_status','married_status',
-'employment_status', 'region_type')
-df[,col_names] <- lapply(df[,col_names] , factor)
-df2 <- one_hot(as.data.table(df))
-Figure 11
-Stroke_status which is the target variable is labelled for stroke prediction in later phase
-as figure below.
-# Labeling the target variable values
-# 'No' to 0 while 'Yes' to 1
-df2$stroke_status <-
-factor(df2$stroke_status, levels=c("No","Yes"), labels=c("0", "1"))
-Figure 12
-Dataset is split into train and test data with a ratio of 0.7 and 0.3 respectively as figure
-below.
-Figure 13
-14
-Class Balancing
-Once the dataset is split into train and test data, class balancing is performed on the train data. The reason class balancing is performed only on train data is because train data need balance class to train model while test data need to remain as similar as real world data to get a correct accuracy.
-Figure 14
-Figure 15
-After perform class balancing using SMOTE technique to oversample the dataset, the distribution of target variable is balanced.
-Figure 16
-Figure 17
-15
-Min-max Normalization
-Min-max normalization is performed on both train and test data as preprocess modelling
-need to be exactly same for train data, test data as well as real world data when the model is
-in production.
-# Min- Max Normalization for numerical value
-# One-hot encoded column will remain 0 and 1
-normalize = function(x) { return ((x - min(x)) / (max(x) - min(x)))}
-# Min- Max Normalization train data
-train_bal_norm_tmp <-
-as.data.frame(lapply(select(train_bal,-stroke_status), normalize))
-train_bal_norm <-
-cbind(train_bal_norm_tmp, stroke_status=train_bal$stroke_status)
-# Min- Max Normalization test data
-test_norm_tmp <-
-as.data.frame(lapply(select(test, -stroke_status), normalize))
-test_norm <-
-cbind(test_norm_tmp,stroke_status= test$stroke_status)
-Figure 18
-16
-SECTION 4: ALGORITHMS MODEL IMPLEMENTATION & MODEL
-VALIDATION
-Naïve Bayes
-The first model build is Naïve Bayes model. The hyperparameter of Naïve Bayes model
-is tuned with grid search method as figure below.
-# Naive Bayes
-# Naive Bayes model tuning using grid search method
-search_grid =
-expand.grid(usekernel = c(TRUE, FALSE),fL = 0:5,adjust = seq(0, 5, by = 1))
-nb_tune_model =
-train(xtrain, ytrain, 'nb', metric="Accuracy",tuneGrid = search_grid)
-Figure 19
-Figure 20
-3 hyperparameter in Naïve Bayes were tuned which are fL, usekernel and adjust. fL
-hyperparameter allow user to include Laplace smoother, usekernel hyperparameter allows
-user to use a kernel density estimate for continuous variables against a guassian density
-estimate while adjust hyperparameter is referring to the bandwidth of kernel density. The final
-value used to build Naïve Bayes model after tuned were fL = 0, usekernel = TRUE and adjust
-= 1.
-17
-Figure 21
-Figure 22
-From the above figure, it’s clearly shown that age attribute plays an importance role in model training. The higher the age, the older the age categories, the more importance the role in Naïve Bayes stroke prediction model building. Naïve Bayes stroke prediction model are train again under feature selection with only attributes with importance above 0.3.
-18
-Figure 23
-The above figure is the confusion matrix of Naïve Bayes model, and the precision of Naïve Bayes model can be calculated which is 35 / (35 + 15) = 0.7 while the recall of Naïve Bayes model is 35 / (35 + 228) = 0.13.
-Figure 24
-The accuracy of Naïve Bayes stroke prediction model is 76.03%.
-19
-Logistic Regression
-The next model build is Logistic Regression model. The Logistic Regression model is
-train as figure below.
-# Logistic Regression
-# Logistic Regression model training
-logreg_model = glm(stroke_status ~., train_final, family = binomial)
-Figure 25
-Figure 26
-Feature selection is performed in Logistic Regression model based on significant
-attributes with 2 * and above based on above figure.
-20
-Figure 27
-After feature selection is performed only 7 attributes is retained in Logistic Regression as figure above.
-Figure 28
-The above figure is the confusion matrix of Logistic Regression model, and the precision of Logistic Regression model can be calculated which is 39 / (39 + 270) = 0.13 while the recall of Logistic Regression model is 39 / (11 + 39) = 0.78.
-Figure 29
-The accuracy of Logistic Regression stroke prediction model is 72.28%.
-21
-Random Forest
-The third model build is Random Forest model. The Random Forest model is tuned
-using grid search method as figure below.
-# Random Forest
-# Random Forest model tuning using grid search method
-tunegrid <- expand.grid(.mtry=c(1:8))
-# The final value used for the model was mtry = 6
-rf_tune_model <-
-train(stroke_status~.,data = train_final, method="rf", metric="Accuracy",
-tuneGrid=tunegrid)
-Figure 30
-Only one hyperparameter in Random Forest is tuned which is the mtry hyperparameter
-as tuning on both mtry and ntree parameter will consume a lot of resource of the local machine
-and the duration took few hours, therefore, in this assignment only mtry hyperparameter is
-tuned for Random Forest. Mtry hyperparameter will randomly sample variables based on the
-number assigned as candidate at each split. The final value of mtry hyperparameter tune from
-grid search method is mtry = 6, therefore, Random Forest model are train with hyperparameter
-mtry = 6.
-Figure 31
-The above figure is the confusion matrix of Random Forest model, and the precision of
-Random Forest model can be calculated which is 4 / (46 + 4) = 0.08 while the recall of Random
-Forest model is 4 / (19 + 4) = 0.17.
-Figure 32
-The accuracy of Random Forest stroke prediction model is 93.59%.
-22
-Support Vector Machine (SVM)
-The next model build is SVM model. The SVM model is tuned using grid search method
-as figure below.
-# SVM
-# SVM model tuning using grid search method
-svm_tune_model =
-tune(svm, stroke_status~., data=train_final, ranges = list(epsilon = seq
-(0, 1, 0.1), cost = 2^(0:2)))
-# SVM optimum model, epsilon = 0, cost = 4, kernel = radial
-svm_opt_model = svm_tune_model$best.model
-Figure 33
-3 hyperparameter in SVM were tuned which are epsilon, cost, and kernel. Epsilon
-hyperparameter represent the margin that user allow and tolerate that penalty is not given to
-error, cost hyperparameter also referring to cost of misclassification where user decide how
-much data that SVM are allowed to misclassify while kernel hyperparameter is referring to the
-method of mathematical function used to deal with input data and transform into. The final
-value used to build SVM model after tuned epsilon = 0, cost = 4, kernel = radial.
-Figure 34
-The above figure is the confusion matrix of SVM model, and the precision of SVM model
-can be calculated which is 7 / (7 + 43) = 0.14 while the recall of SVM model is 7 / (7 + 54) =
-0.11.
-Figure 35
-The accuracy of SVM stroke prediction model is 90.43%.
-23
-SECTION 5: ANALYSIS & RECOMMENDATIONS
-Total of 4 models have been trained in this assignment which are Naïve Bayes, Logistic Regression, Random Forest and SVM. As small dataset gets overfitted easily, therefore, these 4 models is chosen because they can perform better when dealing with small dataset. All four model has been trained and tested with preprocessed data and preprocess model and the main performance metric which is accuracy for the 4 model are recorded as figure below.
-Figure 36
-Based accuracy of 4 trained model in this assignment, Random Forest model will be the champion model in this assignment with the highest accuracy.
-Model Precision Recall Accuracy
-Naïve Bayes
-70%
-13%
-76.03%
-Logistic Regression
-13%
-78%
-72.28%
-Random Forest
-8%
-17%
-93.59%
-SVM
-14%
-11%
-90.43%
-Table 2
-Naïve Bayes model and Logistic Regression model have a high precision and recall respectively compared to Random Forest model and SVM model which mean Naïve Bayes model can get the true positive value and manage to determine patient who are having stroke while Logistic Regression model manage to get a high amount of false negative which mean logistic regression can’t determine the patient who having stroke but it somehow predicted
-24
-those who are not having stroke might have stroke in the future which preventive action can be take in advance.
-Although Random Forest model and SVM model don’t have high precision rate and recall rate, but their accuracy is higher compared to Naïve Bayes model and Logistic Regression model which are 93.59% and 90.43% respectively.
-SVM outperform Logistic Regression because SVM finds the optimum distance between line and support vectors to separate class and this lower risk of classification error, while logistics regression can have different decision line with various weight that close to optimal point.
-Random Forest outperformed Logistic Regression because the explanatory variable in this dataset is more while Logistic Regression can only perform better when the explanatory variable is more than noise variable.
-SVM outperform Naïve Bayes because SVM deal with the interaction between attribute until certain level, but Naïve Bayes treat all attributes independently which cant interpret a deeper level of relationship between attributes but Naïve Bayes train faster than SVM as only probability of each class needed to be calculated in Naïve Bayes.
-Random Forest outperformed Naïve Bayes because it’s have a much more complex and large model size compare to Naïve Bayes while Naïve Bayes is simple model and cannot cater complicated data behavior, therefore, Random Forest have better performance than Naïve Bayes with a dataset with complex behavior but advantage of Naïve Bayes is that it can quickly adapt to the changes in any new dataset while Random Forest need to rebuild whenever there’s changes in dataset else it will lead to overfitting.
-In most of the related work, SVM and Random Forest are used more in stroke prediction model building compared to Naïve Bayes and Logistic Regression as in the real world industry, stroke is a critical disease that can ruin a patient life, therefore, a model with higher accuracy will be prioritize in the real world situation and same case in this assignment where Random Forest stroke prediction model will be recommended as it is the champion model and it has the highest accuracy compare to the other model.
-25
-CONCLUSION
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure8.png" /></a>
+</p>
 
+Children under age ```14``` in Malaysia are not allowed to be employed, therefore, data are checked for age under ```14``` and ```employment_status``` are not ```Children``` as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure9.png" /></a>
+</p>
+
+### 1.7.2 Correlation Matrix
+Correlation matrix heatmap is built to determine the correlation between all numeric attributes as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure10.png" /></a>
+</p>
+
+From the figure above, there are no correlation between attribute that is more than ```0.8```, therefore, no attribute is removed from dataset at this step.
+
+### 1.7.3 One-hot Encoding
+```One-hot encoding``` technique is used to convert ```categorical``` variable into ```binary``` variable so that the variables can provide more detail information for model training. ```Categorical``` column need to be convert to ```factor``` type only able to apply with ```one-hot()``` function as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure11.png" /></a>
+</p>
+
+```Stroke_status``` which is the ```target variable``` is labelled for stroke prediction in later phase as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure12.png" /></a>
+</p>
+
+Dataset is split into ```train``` and ```test``` data with a ratio of ```7:3``` respectively as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure13.png" /></a>
+</p>
+
+### 1.7.4 Class Balancing
+Once the dataset is split into train and test data, ```class balancing``` is performed on the ```train data``` only. The reason class balancing is performed only on train data is because train data need balanced class to train model while test data need to remain as similar as real world data to get a correct accuracy.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure14.png" /></a>
+</p>
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure15.png" /></a>
+</p>
+
+After perform class balancing using SMOTE technique to oversample the dataset, the distribution of target variable is balanced.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure16.png" /></a>
+</p>
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure17.png" /></a>
+</p>
+
+### 1.7.4 Min-max Normalization
+Min-max normalization is performed on both train and test data as preprocess modelling need to be exactly same for train data, test data as well as real world data when the model is in production.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure18.png" /></a>
+</p>
+
+## 1.8 Naïve Bayes
+The first model build is Naïve Bayes model. The hyperparameter of Naïve Bayes model is tuned with ```grid search``` method as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure19.png" /></a>
+</p>
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure20.png" /></a>
+</p>
+
+```3``` hyperparameter in Naïve Bayes were tuned which are ```fL```, ```usekernel``` and ```adjust```. 
+```fL``` hyperparameter allow user to include Laplace smoother, ```usekernel``` hyperparameter allows user to use a kernel density estimate for continuous variables against a guassian density estimate while ```adjust``` hyperparameter is referring to the bandwidth of kernel density. 
+The final value used to build Naïve Bayes model after tuned were ```fL = 0```, ```usekernel = TRUE``` and ```adjust = 1```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure21.png" /></a>
+</p>
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure22.png" /></a>
+</p>
+
+From the above figure, it’s clearly shown that ```age``` attribute plays an importance role in model training. The higher the age, the older the age categories, the more importance the role in Naïve Bayes stroke prediction model building. Naïve Bayes stroke prediction model are train again under feature selection with only attributes with importance above ```0.3```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure23.png" /></a>
+</p>
+
+The above figure is the ```confusion matrix``` of Naïve Bayes model, and the ```precision``` of Naïve Bayes model can be calculated which is ```35 / (35 + 15) = 0.7``` while the ```recall``` of Naïve Bayes model is ```35 / (35 + 228) = 0.13```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure24.png" /></a>
+</p>
+
+The accuracy of Naïve Bayes stroke prediction model is ```76.03%```.
+
+## 1.9 Logistic Regression
+The next model build is Logistic Regression model. The Logistic Regression model is train as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure25.png" /></a>
+</p>
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure26.png" /></a>
+</p>
+
+```Feature selection``` is performed in Logistic Regression model based on significant attributes with ```2 *``` and above based on above figure.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure27.png" /></a>
+</p>
+
+After ```feature selection``` is performed only ```7``` attributes are retained in Logistic Regression as figure above.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure28.png" /></a>
+</p>
+
+The above figure is the ```confusion matrix``` of Logistic Regression model, and the ```precision``` of Logistic Regression model can be calculated which is ```39 / (39 + 270) = 0.13``` while the ```recall``` of Logistic Regression model is ```39 / (11 + 39) = 0.78```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure29.png" /></a>
+</p>
+
+The accuracy of Logistic Regression stroke prediction model is ```72.28%```.
+
+## 1.10 Random Forest
+The third model build is Random Forest model. The Random Forest model is tuned using ```grid search``` method as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure30.png" /></a>
+</p>
+
+Only one hyperparameter in Random Forest is tuned which is the ```mtry``` hyperparameter as tuning on both ```mtry``` and ```ntree``` parameter will consume a lot of resource of the local machine and the duration took few hours, therefore, in this assignment only ```mtry``` hyperparameter is
+tuned for Random Forest. 
+```Mtry``` hyperparameter will randomly sample variables based on the number assigned as candidate at each split. The final value of mtry hyperparameter tune from ```grid search``` method is ```mtry = 6```, therefore, Random Forest model are train with hyperparameter ```mtry = 6```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure31.png" /></a>
+</p>
+
+The above figure is the ```confusion matrix``` of Random Forest model, and the ```precision``` of Random Forest model can be calculated which is ```4 / (46 + 4) = 0.08``` while the ```recall``` of Random Forest model is ```4 / (19 + 4) = 0.17```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure32.png" /></a>
+</p>
+
+The ```accuracy``` of Random Forest stroke prediction model is ```93.59%```.
+
+## 1.11 Support Vector Machine (SVM)
+The next model build is SVM model. The SVM model is tuned using ```grid search``` method as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure33.png" /></a>
+</p>
+
+```3``` hyperparameter in SVM were tuned which are ```epsilon```, ```cost```, and ```kernel```. 
+```Epsilon``` hyperparameter represent the margin that user allow and tolerate that penalty is not given to error, ```cost``` hyperparameter also referring to cost of misclassification where user decide how much data that SVM are allowed to misclassify while ```kernel``` hyperparameter is referring to the method of mathematical function used to deal with input data and transform into. 
+The final value used to build SVM model after tuned ```epsilon = 0```, ```cost = 4```, ```kernel = radial```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure34.png" /></a>
+</p>
+
+The above figure is the ```confusion matrix``` of SVM model, and the ```precision``` of SVM model can be calculated which is ```7 / (7 + 43) = 0.14``` while the ```recall``` of SVM model is ```7 / (7 + 54) = 0.11```.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure35.png" /></a>
+</p>
+
+The ```accuracy``` of SVM stroke prediction model is ```90.43%```.
+
+## 1.12 Analysis & Recommendation
+Total of 4 models have been trained in this assignment which are Naïve Bayes, Logistic Regression, Random Forest and SVM. As small dataset gets overfitted easily, therefore, these 4 models is chosen because they can perform better when dealing with small dataset. All four model has been trained and tested with preprocessed data and preprocess model and the main performance metric which is accuracy for the 4 model are recorded as figure below.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure36.png" /></a>
+</p>
+
+Based ```accuracy``` of 4 trained model in this assignment, ```Random Forest``` model will be the ```champion model``` in this assignment with the highest accuracy.
+
+<p align="center">
+  <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/table2.png" /></a>
+</p>
+
+Naïve Bayes model and Logistic Regression model have a high precision and recall respectively compared to Random Forest model and SVM model which mean Naïve Bayes model can get the true positive value and manage to determine patient who are having stroke while Logistic Regression model manage to get a high amount of false negative which mean logistic regression can’t determine the patient who having stroke but it somehow predicted those who are not having stroke might have stroke in the future which preventive action can be take in advance.
+
+Although Random Forest model and SVM model don’t have high precision rate and recall rate, but their accuracy is higher compared to Naïve Bayes model and Logistic Regression model which are 93.59% and 90.43% respectively.
+
+SVM outperform Logistic Regression because SVM finds the optimum distance between line and support vectors to separate class and this lower risk of classification error, while logistics regression can have different decision line with various weight that close to optimal point.
+
+Random Forest outperformed Logistic Regression because the explanatory variable in this dataset is more while Logistic Regression can only perform better when the explanatory variable is more than noise variable.
+
+SVM outperform Naïve Bayes because SVM deal with the interaction between attribute until certain level, but Naïve Bayes treat all attributes independently which cant interpret a deeper level of relationship between attributes but Naïve Bayes train faster than SVM as only probability of each class needed to be calculated in Naïve Bayes.
+
+Random Forest outperformed Naïve Bayes because it’s have a much more complex and large model size compare to Naïve Bayes while Naïve Bayes is simple model and cannot cater complicated data behavior, therefore, Random Forest have better performance than Naïve Bayes with a dataset with complex behavior but advantage of Naïve Bayes is that it can quickly adapt to the changes in any new dataset while Random Forest need to rebuild whenever there’s changes in dataset else it will lead to overfitting.
+
+In most of the related work, SVM and Random Forest are used more in stroke prediction model building compared to Naïve Bayes and Logistic Regression as in the real world industry, stroke is a critical disease that can ruin a patient life, therefore, a model with higher accuracy will be prioritize in the real world situation and same case in this assignment where Random Forest stroke prediction model will be recommended as it is the champion model and it has the highest accuracy compare to the other model.
 
 ## License
 Click [here](https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/LICENSE) to view license.

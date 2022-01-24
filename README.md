@@ -15,8 +15,9 @@
     - [1.7.1 Data Cleansing](#171-data-cleansing)
     - [1.7.2 Correlation Matrix](#172-correlation-matrix)
     - [1.7.3 One-hot Encoding](#173-one-hot-encoding)
-    - [1.7.4 Class Balancing](#174-class-balancing)
-    - [1.7.4 Min-max Normalization](#174-min-max-normalization)
+    - [1.7.4 Train - Test Split](#174-train---test-split)
+    - [1.7.5 Class Balancing](#175-class-balancing)
+    - [1.7.6 Min-max Normalization](#176-min-max-normalization)
   - [1.8 Model Implementation & Model Validation](#18-model-implementation--model-validation)
     - [1.8.1 Naïve Bayes](#181-naïve-bayes)
     - [1.8.2 Logistic Regression](#182-logistic-regression)
@@ -163,13 +164,14 @@ Stroke_status which is the target variable is labelled for stroke prediction in 
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure12.png" /></a>
 </p>
 
+### 1.7.4 Train - Test Split
 Dataset is split into train and test data with a ratio of 7:3 respectively as figure below.
 
 <p align="center">
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure13.png" /></a>
 </p>
 
-### 1.7.4 Class Balancing
+### 1.7.5 Class Balancing
 Once the dataset is split into train and test data, class balancing is performed on the train data only. The reason class balancing is performed only on train data is because train data need balanced class to train model while test data need to remain as similar as real world data to get a correct accuracy.
 
 <p align="center">
@@ -190,7 +192,7 @@ After perform class balancing using SMOTE technique to oversample the dataset, t
   <a href=##><img src="https://github.com/kelvinnghy96/Stroke-Prediction-with-Data-Science/blob/main/public/image/figure17.png" /></a>
 </p>
 
-### 1.7.4 Min-max Normalization
+### 1.7.6 Min-max Normalization
 Min-max normalization is performed on both train and test data as preprocess modelling need to be exactly same for train data, test data as well as real world data when the model is in production.
 
 <p align="center">
